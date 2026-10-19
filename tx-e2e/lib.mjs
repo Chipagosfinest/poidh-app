@@ -120,8 +120,11 @@ async function claimRecord(pageClaimId) {
   };
 }
 
+/** Page id → record for bounties from before poidh v3 (older contract). */
+export const LEGACY = new Map();
+
 const PROCS = {
-  'bounties.fetch': ({ id }) => bountyRecord(id),
+  'bounties.fetch': ({ id }) => LEGACY.get(id) ?? bountyRecord(id),
   'claims.fetch': ({ claimId }) => claimRecord(claimId),
   'claims.fetchVotingClaimByBountyId': async ({ bountyId }) => {
     const b = await bountyRecord(bountyId);
